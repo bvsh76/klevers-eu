@@ -63,3 +63,16 @@ docker compose down
 - `staging` — рабочая ветка → staging в Laravel Cloud
 - `main` — production
 - CI (GitHub Actions): тесты на каждый push в `staging`/`main` и на PR
+## Laravel Cloud
+
+- Организация: borissshipunov, приложение: klevers-eu, регион: EU Central (Frankfurt)
+- staging — ветка staging — https://klevers-eu-staging-2dkkhb.laravel.cloud
+  - БД: Serverless Postgres 17, кластер klevers-staging (Dev)
+  - сессии, кеш, очереди: database (заданы в Custom environment variables)
+- production — ветка main — https://klevers-eu-production-klmf2r.laravel.cloud
+  - БД: Serverless Postgres 17, кластер klevers-production (Dev, на С6 перевести на Prod)
+  - кеш: Valkey klevers-production-cache (Flex 250 MB); сессии, кеш, очереди: redis
+- Push to deploy включён в обоих окружениях
+- Cloud не ждёт GitHub Actions: в main сливаем только то, что прошло CI на staging
+- Build: composer install; npm закомментирован до С4. Deploy: php artisan migrate --force
+- Секреты (APP_KEY, пароли БД) в чат и скриншоты не попадают
