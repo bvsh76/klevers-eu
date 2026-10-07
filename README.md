@@ -1,58 +1,65 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# klevers.eu
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Сайт компании Klevers (Эстония). Языки: ru (по умолчанию), et, en.
 
-## About Laravel
+Стек: Laravel 13 · PHP 8.4 · PostgreSQL 17 · Redis 7 · Docker. Деплой: Laravel Cloud.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Требования
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Docker Desktop
+- Git
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Первый запуск
 
-## Learning Laravel
+> В Windows PowerShell 5.1 команды разделяются `;`, а не `&&`.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+~~~
+git clone https://github.com/bvsh76/klevers-eu.git
+cd klevers-eu
+Copy-Item .env.example .env
+docker compose up -d --build
+docker compose exec app composer install
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate
+~~~
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Сайт: http://localhost:8090
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+В `.env` для локального окружения:
 
-## Agentic Development
+| Ключ | Значение |
+|---|---|
+| DB_CONNECTION / DB_HOST / DB_PORT | pgsql / db / 5432 |
+| DB_DATABASE / DB_USERNAME / DB_PASSWORD | klevers / klevers / secret |
+| SESSION_DRIVER, CACHE_STORE, QUEUE_CONNECTION | redis |
+| REDIS_HOST / REDIS_PORT | redis / 6379 |
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Контейнеры и порты
 
-```bash
-composer require laravel/boost --dev
+| Сервис | Образ | Порт на хосте |
+|---|---|---|
+| web | nginx 1.27 | 8090 |
+| app | php-fpm 8.4 | — |
+| db | postgres 17 | 5433 |
+| redis | redis 7 | 6380 |
 
-php artisan boost:install
-```
+PHP-FPM локально работает от root — иначе нет записи в `storage` на Windows-монтировании. Только для локальной среды.
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Повседневное
 
-## Contributing
+~~~
+docker compose up -d
+docker compose exec app php artisan test
+docker compose down
+~~~
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Настройки
 
-## Code of Conduct
+- Часовой пояс приложения и БД — UTC. Для вывода дат пользователю: `config('app.display_timezone')` (Europe/Tallinn).
+- Локаль по умолчанию — ru, резервная — en.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Ветки и деплой
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- `staging` — рабочая ветка → staging в Laravel Cloud
+- `main` — production
+- CI (GitHub Actions): тесты на каждый push в `staging`/`main` и на PR
