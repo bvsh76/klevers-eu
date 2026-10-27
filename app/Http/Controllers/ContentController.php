@@ -38,7 +38,7 @@ class ContentController extends Controller
                 ->filter(fn (Package $package) => $package->service?->localizedUrl($locale) !== null
                     && filled($package->getTranslation('title', $locale, false)))
                 ->values(),
-            'contactUrl' => Page::published()->where('key', 'contacts')->first()?->localizedUrl($locale),
+            'contactUrl' => $this->contactUrl($locale),
         ]);
     }
 
@@ -76,8 +76,30 @@ class ContentController extends Controller
 
     private function show(Model $item): View
     {
+        $locale = app()->getLocale();
         request()->attributes->set(LocaleUrl::ATTRIBUTE, $item);
 
-        return view('content', ['item' => $item, 'locale' => app()->getLocale()]);
+        $visible = fn ($items) => $items->filter(fn (Model $related) => $related->localizedUrl($locale) !== null)->values();
+
+        return view('content', [
+            'item' => $item,
+            'locale' => $locale,
+            'packages' => $item instanceof Service
+                ? Package::active()->where('service_id', $item->id)->ordered()->get()
+                    ->filter(fn (Package $package) => filled($package->getTranslation('title', $locale, false)))
+                    ->values()
+                : collect(),
+            'related' => match (true) {
+                $item instanceof Service => $visible(Segment::published()->ordered()->whereIn('id', $item->segments()->pluck('segments.id'))->get()),
+                $item instanceof Segment => $visible(Service::published()->ordered()->whereIn('id', $item->services()->pluck('services.id'))->get()),
+                default => collect(),
+            },
+            'contactUrl' => $this->contactUrl($locale),
+        ]);
+    }
+
+    private function contactUrl(string $locale): ?string
+    {
+        return Page::published()->where('key', 'contacts')->first()?->localizedUrl($locale);
     }
 }

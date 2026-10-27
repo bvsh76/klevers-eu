@@ -26,4 +26,7 @@ return [
     'period_once' => 'разово',
     'period_hour' => 'в час',
     'package_featured' => 'Популярный',
+    'service_packages' => 'Пакеты и цены',
+    'related_segments' => 'Кому подходит',
+    'related_services' => 'Подходящие услуги',
 ];

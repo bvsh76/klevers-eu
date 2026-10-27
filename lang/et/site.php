@@ -26,4 +26,7 @@ return [
     'period_once' => 'ühekordselt',
     'period_hour' => 'tunnis',
     'package_featured' => 'Populaarne',
+    'service_packages' => 'Paketid ja hinnad',
+    'related_segments' => 'Kellele sobib',
+    'related_services' => 'Sobivad teenused',
 ];

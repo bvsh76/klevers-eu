@@ -26,4 +26,7 @@ return [
     'period_once' => 'one-off',
     'period_hour' => 'per hour',
     'package_featured' => 'Popular',
+    'service_packages' => 'Packages and pricing',
+    'related_segments' => 'Who it is for',
+    'related_services' => 'Relevant services',
 ];

@@ -26,7 +26,7 @@ class PublicContentTest extends TestCase
         Page::create(['slug' => ['ru' => 'kontakty'], 'title' => ['ru' => 'Контакты'], 'body' => ['ru' => '<p>Адрес</p>'], 'is_published' => true]);
         Page::create(['slug' => ['ru' => 'chernovik'], 'title' => ['ru' => 'Черновик'], 'is_published' => false]);
 
-        $this->get('/ru/kontakty')->assertOk()->assertSee('<h1>Контакты</h1>', false)->assertSee('<p>Адрес</p>', false);
+        $this->get('/ru/kontakty')->assertOk()->assertSee('Контакты</h1>', false)->assertSee('<p>Адрес</p>', false);
         $this->get('/ru/chernovik')->assertNotFound();
         $this->get('/en/kontakty')->assertNotFound();
     }
