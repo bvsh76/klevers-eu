@@ -93,3 +93,35 @@ docker compose down
 - `/robots.txt` генерируется маршрутом. Индексация разрешена только при `APP_INDEXABLE=true` (`config/seo.php`), по умолчанию закрыто всё. Включать только на production.
 - `/sitemap.xml` перечисляет локализованные страницы со ссылками на языковые версии. Список страниц пока задан в `routes/web.php`, с С3 будет строиться из БД.
 - Страницы 404/500 лежат в `resources/views/errors/`. Язык берётся из первого сегмента URL, при неизвестном сегменте используется язык по умолчанию.
+
+## Контентная модель (С3)
+
+- Модели: `Page`, `Segment`, `Service` (переводимые `slug`, `title`, `intro`*, `body`, `meta_title`, `meta_description`; `key` — системный ключ для кода; `is_published`, `sort`), `Package` (услуга, цена в EUR или «по запросу», период, переводимые название/описание/состав), `Lead` (заявки со статусом), `Subscriber` (подписчики, токен отписки). *`intro` — только у сегментов и услуг.
+- Переводы — `spatie/laravel-translatable`, JSON-колонки `{ru, et, en}`. Уникальность слага — отдельный индекс на каждый язык (`slug->>'ru'` и т. д.); новый язык = новая миграция индексов + префиксы разделов.
+- Роли пользователей: `App\Enums\Role` (`admin`, `editor` — доступ в админку; `client` — задел под этап 2). Роль не заполняется массово, ставится явно.
+
+## URL публичных страниц
+
+- Страница: `/{locale}/{slug}`; запись с `key = home` → 301 на `/{locale}`.
+- Разделы: `/{locale}/{префикс}/{slug}`, префиксы в `config/locales.php` → `sections`: услуги `uslugi / teenused / services`, сегменты `klientam / klientidele / clients` (ET — на вычитку).
+- Контроллер кладёт запись в атрибут запроса (`LocaleUrl::ATTRIBUTE`), поэтому переключатель языка и hreflang ведут на переведённый слаг; hreflang выводится только для языков, где запись опубликована и переведена.
+- sitemap.xml собирается из БД (`App\Support\Sitemap`).
+
+## Админка
+
+- `/admin` (вход `/admin/login`, 5 попыток в минуту на e-mail+IP), только для ролей `admin`/`editor`; интерфейс на русском; ответы с `X-Robots-Tag: noindex`.
+- Разделы: Страницы, Сегменты, Услуги (общий `Admin\ContentController`), Пакеты, Заявки (фильтр, поиск, статус, CSV), Подписчики (фильтр, CSV). CSV — UTF-8 с BOM, разделитель `;`, даты в `Europe/Tallinn`.
+- Слаг можно не заполнять — генерируется из заголовка. Записи с `key` удалить нельзя.
+- Стили админки — `public/css/admin.css` (без Vite). Не создавать папку `public/admin`: nginx примет её за каталог и сломает маршрут `/admin`.
+
+## Сиды
+
+- `AdminUserSeeder` — админ из `ADMIN_EMAIL` / `ADMIN_NAME` / `ADMIN_PASSWORD` (пароль задаётся только при создании; без переменных — пропуск).
+- `DemoContentSeeder` — демо-контент на 3 языках; `db:seed` запускает его только вне production.
+- Локально: `docker compose exec app php artisan db:seed`.
+- Laravel Cloud (все окружения по умолчанию `APP_ENV=production`): переменные `ADMIN_*` в Custom environment variables → Deploy → вкладка Commands → «Open console»:
+  `php artisan db:seed --force` (+ на staging `php artisan db:seed --class=DemoContentSeeder --force`). Деплой выполняет только миграции, не сиды.
+
+## Тесты
+
+- Локально тесты идут на SQLite в памяти (`phpunit.xml`), CI — на PostgreSQL 17. Не использовать PG-специфичный SQL в запросах приложения (например, `ilike` → `whereLike`).
