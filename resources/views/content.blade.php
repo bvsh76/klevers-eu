@@ -14,7 +14,7 @@
 
     @if (filled($t($item, 'body')))
         <article class="mx-auto max-w-site px-4 pt-12 sm:px-6">
-            <div class="prose max-w-3xl">{!! $t($item, 'body') !!}</div>
+            <div class="prose max-w-3xl">{!! \App\Support\Html::clean($t($item, 'body')) !!}</div>
         </article>
     @endif
 

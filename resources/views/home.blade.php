@@ -65,7 +65,7 @@
 
     @if ($page && filled($t($page, 'body')))
         <section class="mx-auto max-w-site px-4 py-16 sm:px-6">
-            <div class="prose max-w-3xl">{!! $t($page, 'body') !!}</div>
+            <div class="prose max-w-3xl">{!! \App\Support\Html::clean($t($page, 'body')) !!}</div>
         </section>
     @endif
 

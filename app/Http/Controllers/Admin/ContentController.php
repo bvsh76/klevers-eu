@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Support\Html;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -176,7 +177,13 @@ abstract class ContentController extends Controller
         $item->sort = (int) ($data['sort'] ?? 0);
 
         foreach (array_keys($this->fields()) as $name) {
-            $values = array_filter((array) ($data[$name] ?? []), fn ($value) => filled($value));
+            $values = (array) ($data[$name] ?? []);
+
+            if ($name === 'body') {
+                $values = array_map(fn ($value) => Html::clean($value), $values);
+            }
+
+            $values = array_filter($values, fn ($value) => filled($value));
             $item->replaceTranslations($name, $values);
         }
 
