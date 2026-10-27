@@ -29,6 +29,7 @@ abstract class ContentController extends Controller
         return [
             'title' => ['Заголовок', 'input', true],
             'slug' => ['Слаг (URL); пусто — из заголовка', 'input', true],
+            'intro' => ['Вступление (подзаголовок, карточки)', 'textarea', false],
             'body' => ['Текст (HTML)', 'textarea', false],
             'meta_title' => ['Meta title', 'input', false],
             'meta_description' => ['Meta description', 'textarea', false],

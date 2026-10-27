@@ -16,7 +16,7 @@ class DemoContentSeeder extends Seeder
     public function run(): void
     {
         $pages = [
-            'home' => [['home', 'home', 'home'], ['Главная', 'Avaleht', 'Home']],
+            'home' => [['home', 'home', 'home'], ['Консалтинг и бухгалтерия для вашей фирмы в Эстонии', 'Nõustamine ja raamatupidamine teie Eesti ettevõttele', 'Consulting and accounting for your company in Estonia']],
             'about' => [['o-kompanii', 'meist', 'about'], ['О компании', 'Meist', 'About us']],
             'contacts' => [['kontakty', 'kontakt', 'contacts'], ['Контакты', 'Kontakt', 'Contacts']],
             'privacy' => [['politika-konfidencialnosti', 'privaatsuspoliitika', 'privacy-policy'], ['Политика конфиденциальности', 'Privaatsuspoliitika', 'Privacy policy']],
@@ -27,6 +27,7 @@ class DemoContentSeeder extends Seeder
             Page::updateOrCreate(['key' => $key], [
                 'slug' => $this->t(...$slug),
                 'title' => $this->t(...$title),
+                'intro' => $key === 'home' ? $this->t('Налоговое, бизнес- и финансовое консультирование и бухгалтерия для начинающих, малого бизнеса и жителей ЕС с эстонской фирмой.', 'Maksu-, äri- ja finantsnõustamine ning raamatupidamine alustajatele, väikeettevõtetele ja Eesti firmaga EL-i elanikele.', 'Tax, business and financial consulting and accounting for start-ups, small businesses and EU residents with an Estonian company.') : null,
                 'body' => $this->t('<p>Демо-текст страницы.</p>', '<p>Lehe näidistekst.</p>', '<p>Demo page text.</p>'),
                 'meta_title' => $this->t(...$title),
                 'is_published' => true,

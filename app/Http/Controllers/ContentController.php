@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Package;
 use App\Models\Page;
 use App\Models\Segment;
 use App\Models\Service;
@@ -16,6 +17,30 @@ class ContentController extends Controller
         'services' => Service::class,
         'segments' => Segment::class,
     ];
+
+    public function home(): View
+    {
+        $locale = app()->getLocale();
+        $page = Page::published()->where('key', 'home')->first();
+
+        if ($page) {
+            request()->attributes->set(LocaleUrl::ATTRIBUTE, $page);
+        }
+
+        $visible = fn ($items) => $items->filter(fn (Model $item) => $item->localizedUrl($locale) !== null)->values();
+
+        return view('home', [
+            'page' => $page,
+            'locale' => $locale,
+            'services' => $visible(Service::published()->ordered()->get()),
+            'segments' => $visible(Segment::published()->ordered()->get()),
+            'packages' => Package::active()->where('is_featured', true)->ordered()->with('service')->get()
+                ->filter(fn (Package $package) => $package->service?->localizedUrl($locale) !== null
+                    && filled($package->getTranslation('title', $locale, false)))
+                ->values(),
+            'contactUrl' => Page::published()->where('key', 'contacts')->first()?->localizedUrl($locale),
+        ]);
+    }
 
     public function page(string $slug): View|RedirectResponse
     {

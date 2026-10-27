@@ -23,15 +23,6 @@ class ServiceController extends ContentController
         return ['plural' => 'Услуги', 'create' => 'Новая услуга', 'edit' => 'Редактирование услуги'];
     }
 
-    protected function fields(): array
-    {
-        $fields = parent::fields();
-
-        return array_slice($fields, 0, 2, true)
-            + ['intro' => ['Вступление (для карточек)', 'textarea', false]]
-            + array_slice($fields, 2, null, true);
-    }
-
     protected function extraRules(?Model $item): array
     {
         return [

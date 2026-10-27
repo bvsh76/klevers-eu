@@ -20,13 +20,4 @@ class SegmentController extends ContentController
     {
         return ['plural' => 'Сегменты', 'create' => 'Новый сегмент', 'edit' => 'Редактирование сегмента'];
     }
-
-    protected function fields(): array
-    {
-        $fields = parent::fields();
-
-        return array_slice($fields, 0, 2, true)
-            + ['intro' => ['Вступление (для карточек)', 'textarea', false]]
-            + array_slice($fields, 2, null, true);
-    }
 }

@@ -14,7 +14,7 @@ Route::prefix('{locale}')
         $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
         $sections = collect(config('locales.sections'))->flatten()->unique()->implode('|');
 
-        Route::view('/', 'home')->name('home');
+        Route::get('/', [ContentController::class, 'home'])->name('home');
         Route::get('{section}/{slug}', [ContentController::class, 'section'])
             ->where(['section' => $sections, 'slug' => $slug])
             ->name('section');
