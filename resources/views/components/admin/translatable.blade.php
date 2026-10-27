@@ -6,7 +6,14 @@
         @php($value = is_array($value) ? implode("\n", $value) : $value)
         <label>
             <span class="lang">{{ strtoupper($locale) }}@if ($required && $locale === $default) *@endif</span>
-            @if (in_array($type, ['textarea', 'lines'], true))
+            @if ($type === 'html')
+                <textarea name="{{ $name }}[{{ $locale }}]" data-editor>{{ $value }}</textarea>
+                @once
+                    @push('scripts')
+                        @vite('resources/js/admin-editor.js')
+                    @endpush
+                @endonce
+            @elseif (in_array($type, ['textarea', 'lines'], true))
                 <textarea name="{{ $name }}[{{ $locale }}]">{{ $value }}</textarea>
             @else
                 <input type="text" name="{{ $name }}[{{ $locale }}]" value="{{ $value }}">

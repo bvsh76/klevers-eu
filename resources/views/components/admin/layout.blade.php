@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }} — {{ config('app.name') }}</title>
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v={{ filemtime(public_path('css/admin.css')) }}">
+    @stack('scripts')
 </head>
 <body>
 @auth

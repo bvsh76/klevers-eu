@@ -31,7 +31,7 @@ abstract class ContentController extends Controller
             'title' => ['Заголовок', 'input', true],
             'slug' => ['Слаг (URL); пусто — из заголовка', 'input', true],
             'intro' => ['Вступление (подзаголовок, карточки)', 'textarea', false],
-            'body' => ['Текст (HTML)', 'textarea', false],
+            'body' => ['Текст', 'html', false],
             'meta_title' => ['Meta title', 'input', false],
             'meta_description' => ['Meta description', 'textarea', false],
         ];
@@ -155,7 +155,7 @@ abstract class ContentController extends Controller
 
         foreach ($this->fields() as $name => [$label, $type, $required]) {
             foreach ($locales as $locale) {
-                $rule = [$required && $locale === $default ? 'required' : 'nullable', 'string', $type === 'textarea' ? 'max:65000' : 'max:255'];
+                $rule = [$required && $locale === $default ? 'required' : 'nullable', 'string', in_array($type, ['textarea', 'html'], true) ? 'max:65000' : 'max:255'];
 
                 if ($name === 'slug') {
                     $rule[] = 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/';
