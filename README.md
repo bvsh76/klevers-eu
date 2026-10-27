@@ -125,3 +125,22 @@ docker compose down
 ## Тесты
 
 - Локально тесты идут на SQLite в памяти (`phpunit.xml`), CI — на PostgreSQL 17. Не использовать PG-специфичный SQL в запросах приложения (например, `ilike` → `whereLike`).
+## Фронтенд
+
+Стек: Blade + Tailwind CSS 4 + Alpine.js, сборка Vite. Node 24+ (на Windows ставится локально, не в контейнере).
+
+```powershell
+npm ci             # установка по package-lock.json
+npm run build      # сборка в public/build (папка в .gitignore)
+npm run dev        # dev-сервер Vite с автообновлением (сайт по-прежнему на :8090)
+```
+
+- **Тема** — дизайн-токены в `resources/css/app.css` (`@theme`: цвета `primary`, `accent`, `ink`, `muted`, `surface`, `line` и др., `rounded-card`, `max-w-site`). Айдентику клиента подключаем заменой значений токенов, разметку не трогаем.
+- **Шрифт** — Inter, self-hosted через `laravel-vite-plugin/fonts` (подмножества latin, latin-ext, cyrillic), в layout — `@fonts`.
+- **Layout и компоненты** — `components/layouts/app` (шапка, подвал, skip-link), `components/site/*`: `header` (мобильное меню на Alpine), `footer`, `package-card`, `package-grid`, `cta-band`, `error`; `language-switcher`.
+- **Навигация** — `App\Support\Navigation::for($locale)`: только опубликованные и переведённые записи; при недоступной БД — пустые списки.
+- **Страницы** — главная `home.blade.php` (`ContentController@home`: Page key=home — заголовок и `intro` в hero, услуги, сегменты, пакеты с `is_featured`); услуга/сегмент/страница — `content.blade.php` (пакеты услуги, связанные записи, CTA). Ссылка CTA — страница с key=contacts.
+- **Цены** — `App\Support\Price::format()` без `intl`: ru/et `1 200 €`, en `€1,200`.
+- **Текст из админки (body)** — редактор TipTap (`resources/js/admin-editor.js`, подключается только на формах с полем типа `html`). HTML чистится `App\Support\Html::clean()` (symfony/html-sanitizer, белый список) при сохранении и при выводе; на сайте оформляется `prose` (@tailwindcss/typography).
+- **Тесты** — в `tests/TestCase.php` вызывается `withoutVite()`: CI не собирает фронтенд.
+- **Laravel Cloud** — в Build commands обоих окружений должны быть `npm ci` и `npm run build`, иначе `@vite` без manifest уронит страницы.
