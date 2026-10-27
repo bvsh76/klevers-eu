@@ -42,3 +42,5 @@ Route::get('sitemap.xml', function () {
     return response('<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.view('sitemap', ['urls' => $urls])->render())
         ->header('Content-Type', 'application/xml; charset=UTF-8');
 })->name('sitemap');
+
+require __DIR__.'/admin.php';

@@ -1,0 +1,26 @@
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1f2328;background:#f5f6f8}
+a{color:#0b5cad}
+h1{font-size:22px;margin:0 0 16px}
+.topbar{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:10px 20px;background:#1f2a37;color:#fff}
+.topbar nav{display:flex;flex-wrap:wrap;gap:4px;flex:1}
+.topbar nav a{color:#cfd8e3;text-decoration:none;padding:4px 10px;border-radius:6px}
+.topbar nav a.active,.topbar nav a:hover{background:#344457;color:#fff}
+.container{max-width:1200px;margin:24px auto;padding:0 16px}
+.card{background:#fff;border:1px solid #dde1e6;border-radius:10px;padding:20px}
+.narrow{max-width:380px;margin:60px auto;display:grid;gap:12px}
+label{display:grid;gap:4px;font-weight:600;font-size:14px}
+input,select,textarea{font:inherit;padding:8px 10px;border:1px solid #c5cbd3;border-radius:6px;width:100%}
+textarea{min-height:120px}
+button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:#0b5cad;color:#fff;cursor:pointer}
+button.link{background:none;color:#cfd8e3;padding:4px 8px}
+button.danger{background:#b42318}
+.error{color:#b42318;margin:0;font-size:14px}
+.alert{padding:10px 14px;border-radius:8px;margin-bottom:16px}
+.alert.success{background:#e5f4e4;border:1px solid #a6d8a3}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.stat{display:grid;gap:4px}
+.stat strong{font-size:28px}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #e6e9ed;vertical-align:top}
+th{background:#f0f2f5;font-size:13px}
