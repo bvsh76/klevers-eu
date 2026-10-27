@@ -35,4 +35,8 @@ label.check{display:flex;gap:8px;align-items:center}
 label.check input{width:auto}
 .actions{display:flex;gap:12px;margin-top:12px}
 .muted{color:#57606a;font-size:13px}
-.alert.error-box{background:#fbebeb;border:1px solid #f1b5b5}
+.alert.error-box{background:#fbebeb;border:1px solid #f1b5b5}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.filters input,.filters select{width:auto;min-width:200px}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;background:#f0efec}
+.badge.new{background:#e7f1fb}.badge.in_progress{background:#f9eeda}.badge.done{background:#e5f4e4}.badge.spam{background:#fbebeb}
+.pre{white-space:pre-wrap}
