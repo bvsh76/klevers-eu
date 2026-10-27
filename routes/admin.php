@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\SegmentController;
+use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Middleware\EnsureAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -12,5 +15,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(EnsureAdmin::class)->group(function () {
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/', DashboardController::class)->name('dashboard');
+        Route::resource('pages', PageController::class)->except('show')->parameters(['pages' => 'id']);
+        Route::resource('segments', SegmentController::class)->except('show')->parameters(['segments' => 'id']);
+        Route::resource('services', ServiceController::class)->except('show')->parameters(['services' => 'id']);
     });
 });
