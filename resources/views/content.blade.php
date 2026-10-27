@@ -28,7 +28,7 @@
     @if ($related->isNotEmpty())
         <section class="mx-auto max-w-site px-4 pt-16 sm:px-6">
             <h2 class="text-2xl font-bold tracking-tight">{{ $item instanceof \App\Models\Service ? __('site.related_segments') : __('site.related_services') }}</h2>
-            <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div @class(['mt-6 grid gap-6 sm:grid-cols-2', 'lg:grid-cols-3' => ! in_array($related->count(), [2, 4], true)])>
                 @foreach ($related as $rel)
                     <a href="{{ $rel->localizedUrl($locale) }}" class="group flex flex-col rounded-card border border-line bg-surface p-6 transition hover:border-primary hover:shadow-md">
                         <h3 class="text-lg font-semibold group-hover:text-primary">{{ $t($rel, 'title') }}</h3>
