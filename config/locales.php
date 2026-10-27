@@ -17,4 +17,14 @@ return [
         'en' => 'English',
     ],
 
+    /*
+    | Translated URL prefixes of sections: /{locale}/{prefix}/{slug}.
+    | Pages without a section live at /{locale}/{slug}.
+    | Adding a language requires a prefix for every section.
+    */
+    'sections' => [
+        'services' => ['ru' => 'uslugi', 'et' => 'teenused', 'en' => 'services'],
+        'segments' => ['ru' => 'klientam', 'et' => 'klientidele', 'en' => 'clients'],
+    ],
+
 ];

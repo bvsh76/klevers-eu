@@ -28,4 +28,9 @@ class Service extends Model
     {
         return $this->belongsToMany(Segment::class)->orderBy('segments.sort');
     }
+
+    public function publicSection(): ?string
+    {
+        return 'services';
+    }
 }

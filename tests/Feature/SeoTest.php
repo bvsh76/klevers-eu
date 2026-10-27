@@ -2,10 +2,13 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class SeoTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_canonical_and_hreflang_ignore_query_string(): void
     {
         $response = $this->get('/en?utm_source=x');

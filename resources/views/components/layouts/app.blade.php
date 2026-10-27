@@ -14,10 +14,9 @@
     @endif
     @if ($alternates)
         <link rel="canonical" href="{{ url()->current() }}">
-        @foreach (array_keys(config('locales.supported')) as $code)
-            <link rel="alternate" hreflang="{{ $code }}" href="{{ \App\Support\LocaleUrl::to($code, false) }}">
+        @foreach (\App\Support\LocaleUrl::alternates() as $code => $href)
+            <link rel="alternate" hreflang="{{ $code }}" href="{{ $href }}">
         @endforeach
-        <link rel="alternate" hreflang="x-default" href="{{ \App\Support\LocaleUrl::to(config('locales.default'), false) }}">
     @endif
 </head>
 <body>

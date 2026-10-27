@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ContentController;
+use App\Support\Sitemap;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('home', ['locale' => config('locales.default')]))
@@ -9,7 +11,16 @@ Route::prefix('{locale}')
     ->where(['locale' => implode('|', array_keys(config('locales.supported')))])
     ->middleware('locale')
     ->group(function () {
+        $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
+        $sections = collect(config('locales.sections'))->flatten()->unique()->implode('|');
+
         Route::view('/', 'home')->name('home');
+        Route::get('{section}/{slug}', [ContentController::class, 'section'])
+            ->where(['section' => $sections, 'slug' => $slug])
+            ->name('section');
+        Route::get('{slug}', [ContentController::class, 'page'])
+            ->where(['slug' => $slug])
+            ->name('page');
     });
 
 Route::get('robots.txt', function () {
@@ -22,24 +33,7 @@ Route::get('robots.txt', function () {
 })->name('robots');
 
 Route::get('sitemap.xml', function () {
-    // Localized static pages. C3: add pages from the database.
-    $routeNames = ['home'];
-    $locales = array_keys(config('locales.supported'));
-
-    $urls = [];
-    foreach ($routeNames as $name) {
-        $alternates = [];
-        foreach ($locales as $locale) {
-            $alternates[$locale] = route($name, ['locale' => $locale]);
-        }
-        $alternates['x-default'] = route($name, ['locale' => config('locales.default')]);
-
-        foreach ($locales as $locale) {
-            $urls[] = ['loc' => $alternates[$locale], 'alternates' => $alternates];
-        }
-    }
-
-    return response('<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.view('sitemap', ['urls' => $urls])->render())
+    return response('<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.view('sitemap', ['urls' => Sitemap::urls()])->render())
         ->header('Content-Type', 'application/xml; charset=UTF-8');
 })->name('sitemap');
 
