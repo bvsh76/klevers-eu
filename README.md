@@ -76,3 +76,13 @@ docker compose down
 - Cloud не ждёт GitHub Actions: в main сливаем только то, что прошло CI на staging
 - Build: composer install; npm закомментирован до С4. Deploy: php artisan migrate --force
 - Секреты (APP_KEY, пароли БД) в чат и скриншоты не попадают
+## Мультиязычность
+
+- Языки и их порядок в переключателе задаются в `config/locales.php` (`supported`). Язык по умолчанию — `APP_LOCALE` (ru), fallback — `APP_FALLBACK_LOCALE` (en).
+- Все страницы живут под префиксом `/{locale}`: группа в `routes/web.php`, middleware `locale` → `App\Http\Middleware\SetLocale`. Запрос на `/` даёт 302 на язык по умолчанию, неизвестный префикс — 404.
+- Внутри группы `route('name')` сам подставляет текущий язык. Ссылка на эту же страницу на другом языке — `App\Support\LocaleUrl::to('et')`.
+- Язык по умолчанию брать из `config('locales.default')`, а не из `config('app.locale')`: `App::setLocale()` меняет `app.locale` на каждом запросе.
+- Layout `<x-layouts.app>` выводит `<html lang>`, `hreflang` и `x-default`. Переключатель языков — `<x-language-switcher />`.
+- Системные переводы (валидация, пароли, пагинация, HTTP-статусы) берутся из пакета laravel-lang (require-dev) и обновляются через `php artisan lang:update`.
+- Свои строки сайта лежат только в `lang/{ru,et,en}/site.php`, пакет их не трогает. Каталог `lang/` исключён из Pint (`pint.json`).
+- Чтобы добавить язык: строка в `config/locales.php` → `php artisan lang:add <код>` → файл `lang/<код>/site.php`.
