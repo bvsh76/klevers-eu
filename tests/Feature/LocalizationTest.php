@@ -41,7 +41,8 @@ class LocalizationTest extends TestCase
     {
         $this->get('/en')
             ->assertSee('aria-label="Language"', false)
-            ->assertSee('<span aria-current="true" lang="en">English</span>', false)
+            ->assertSee('aria-current="true" lang="en"', false)
+            ->assertSee('<span class="sr-only">English</span>', false)
             ->assertSee('href="'.route('home', ['locale' => 'ru']).'" hreflang="ru"', false);
     }
 }

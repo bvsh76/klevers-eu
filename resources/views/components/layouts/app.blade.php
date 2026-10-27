@@ -3,6 +3,7 @@
     'description' => null,
     'alternates' => true,
 ])
+@php($nav = \App\Support\Navigation::for(app()->getLocale()))
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
@@ -18,13 +19,15 @@
             <link rel="alternate" hreflang="{{ $code }}" href="{{ $href }}">
         @endforeach
     @endif
+    @fonts
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
-    <header>
-        <x-language-switcher />
-    </header>
-    <main>
+<body class="flex min-h-screen flex-col">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-white">{{ __('site.skip_to_content') }}</a>
+    <x-site.header :nav="$nav" />
+    <main id="main" class="flex-1">
         {{ $slot }}
     </main>
+    <x-site.footer :nav="$nav" />
 </body>
 </html>
