@@ -86,3 +86,10 @@ docker compose down
 - Системные переводы (валидация, пароли, пагинация, HTTP-статусы) берутся из пакета laravel-lang (require-dev) и обновляются через `php artisan lang:update`.
 - Свои строки сайта лежат только в `lang/{ru,et,en}/site.php`, пакет их не трогает. Каталог `lang/` исключён из Pint (`pint.json`).
 - Чтобы добавить язык: строка в `config/locales.php` → `php artisan lang:add <код>` → файл `lang/<код>/site.php`.
+## SEO и страницы ошибок
+
+- Layout `<x-layouts.app>` принимает `title`, `description` и `alternates`. При `alternates=true` (по умолчанию) выводятся canonical (текущий URL без query), `hreflang` на все языки и `x-default`.
+- `LocaleUrl::to($locale, $withQuery = true)`: для `hreflang` query отбрасывается, переключатель языков его сохраняет.
+- `/robots.txt` генерируется маршрутом. Индексация разрешена только при `APP_INDEXABLE=true` (`config/seo.php`), по умолчанию закрыто всё. Включать только на production.
+- `/sitemap.xml` перечисляет локализованные страницы со ссылками на языковые версии. Список страниц пока задан в `routes/web.php`, с С3 будет строиться из БД.
+- Страницы 404/500 лежат в `resources/views/errors/`. Язык берётся из первого сегмента URL, при неизвестном сегменте используется язык по умолчанию.

@@ -19,4 +19,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+        // Error pages: take the locale from the first URL segment (no route = no SetLocale middleware).
+        $exceptions->render(function (Throwable $e, Request $request) {
+            $locale = $request->segment(1);
+            app()->setLocale(config('locales.default'));
+            if (is_string($locale) && array_key_exists($locale, config('locales.supported'))) {
+                app()->setLocale($locale);
+            }
+
+            return null;
+        });
     })->create();
