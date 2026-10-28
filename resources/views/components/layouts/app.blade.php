@@ -19,6 +19,9 @@
             <link rel="alternate" hreflang="{{ $code }}" href="{{ $href }}">
         @endforeach
     @endif
+    @if ($ga4 = \App\Models\Setting::get('ga4_id'))
+        <meta name="ga4-id" content="{{ $ga4 }}">
+    @endif
     @fonts
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -29,5 +32,6 @@
         {{ $slot }}
     </main>
     <x-site.footer :nav="$nav" />
+    <x-site.cookie-banner />
 </body>
 </html>

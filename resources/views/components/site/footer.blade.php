@@ -29,6 +29,6 @@
         </div>
     </div>
     <div class="border-t border-line">
-        <p class="mx-auto max-w-site px-4 py-6 text-sm text-muted sm:px-6">&copy; {{ now(config('app.display_timezone'))->year }} {{ config('app.name') }}. {{ __('site.footer_rights') }}</p>
+        <p class="mx-auto max-w-site px-4 py-6 text-sm text-muted sm:px-6">&copy; {{ now(config('app.display_timezone'))->year }} {{ config('app.name') }}. {{ __('site.footer_rights') }} &middot; <button type="button" x-data x-on:click="$dispatch('consent-open')" class="underline hover:text-ink">{{ __('site.cookie_footer_link') }}</button></p>
     </div>
 </footer>
