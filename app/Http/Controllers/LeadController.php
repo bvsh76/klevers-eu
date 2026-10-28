@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLeadRequest;
+use App\Mail\LeadReceived;
 use App\Models\Lead;
+use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class LeadController extends Controller
@@ -20,7 +23,7 @@ class LeadController extends Controller
 
         $data = $request->validated();
 
-        Lead::create([
+        $lead = Lead::create([
             'name' => trim($data['name']),
             'email' => $data['email'],
             'phone' => filled($data['phone'] ?? null) ? trim($data['phone']) : null,
@@ -34,6 +37,12 @@ class LeadController extends Controller
             'user_agent' => Str::limit((string) $request->userAgent(), 1000, ''),
             'utm' => $request->session()->get('utm'),
         ]);
+
+        $notify = Setting::get('lead_email');
+        if ($notify) {
+            // после ответа пользователю; сбой почты пишется в лог и не ломает форму
+            defer(fn () => rescue(fn () => Mail::to($notify)->send(new LeadReceived($lead))));
+        }
 
         return $redirect;
     }
