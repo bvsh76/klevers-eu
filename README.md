@@ -144,3 +144,40 @@ npm run dev        # dev-сервер Vite с автообновлением (с
 - **Текст из админки (body)** — редактор TipTap (`resources/js/admin-editor.js`, подключается только на формах с полем типа `html`). HTML чистится `App\Support\Html::clean()` (symfony/html-sanitizer, белый список) при сохранении и при выводе; на сайте оформляется `prose` (@tailwindcss/typography).
 - **Тесты** — в `tests/TestCase.php` вызывается `withoutVite()`: CI не собирает фронтенд.
 - **Laravel Cloud** — в Build commands обоих окружений должны быть `npm ci` и `npm run build`, иначе `@vite` без manifest уронит страницы.
+## Настройки сайта
+
+- Страница `/admin/settings`, доступ только у роли `admin` (editor её не видит).
+- Ключи: `whatsapp` (хранятся только цифры), `telegram` (без `@`), `lead_email`, `booking_embed` (выводится на сайт как есть — только доверенный код), `ga4_id` (`G-…`), `lead_magnet_url` (только `https`).
+- Модель `App\Models\Setting`: `Setting::get($key, $default)`, `Setting::put($key, $value)`; все значения кешируются в `settings.all`, кеш сбрасывается при сохранении.
+
+## Формы и заявки
+
+- Заявка: `POST /{locale}/lead` (`lead.store`), лимит 5 запросов в минуту, honeypot-поле `website`, согласие обязательно.
+- В `Lead` сохраняются язык, `source` (путь страницы), IP, User-Agent и UTM. Middleware `StoreUtm` запоминает `utm_*` из адреса в сессию при входе на сайт.
+- Форма (`<x-site.lead-form>`) выводится на странице `key=contacts`; кнопка CTA ведёт на якорь `#lead-form`.
+- Подписка: форма в подвале (`<x-site.subscribe-form>`), `POST /{locale}/subscribe`. Double opt-in: письмо с подписанной ссылкой (7 дней) на `/{locale}/subscribe/confirm/{id}`; после подтверждения показывается ссылка на лид-магнит из настроек.
+- Отписка: `/{locale}/unsubscribe/{token}` — страница с кнопкой, отписка POST-запросом. Повторная подписка уже подтверждённого адреса ничего не меняет и не раскрывает этого.
+
+## Почта
+
+- `App\Mail\LeadReceived` — письмо о заявке на `lead_email` из настроек, Reply-To — e-mail клиента. Если адрес не задан, письмо не отправляется (заявка всё равно в админке).
+- `App\Mail\ConfirmSubscription` — подтверждение подписки на языке подписчика.
+- Отправка через `defer()` после ответа пользователю, без очереди и воркера. Сбой отправки пишется в лог и не ломает форму.
+- Локально `MAIL_MAILER=log` — письма в `storage/logs/laravel.log`. В production — Resend, подключается на С6 после DNS-проверки домена.
+
+## Cookie и аналитика
+
+- Баннер `<x-site.cookie-banner>` + `resources/js/consent.js` (Alpine `consent`). Согласие хранится в cookie `klevers_consent` на 180 дней: `{v, analytics, external}`.
+- Кнопки «Принять все» и «Только необходимые» равнозначны; ссылка «Настройки cookie» в подвале открывает баннер (событие `consent-open`).
+- GA4: `<meta name="ga4-id">` выводится, только если ID задан в настройках; `gtag.js` загружается только после согласия на аналитику (Consent Mode v2, базовый режим). При отзыве согласия cookie `_ga*` удаляются и страница перезагружается.
+- Внешние сервисы: содержимое `<template data-consent="external">` вставляется на страницу только после согласия, скрипты внутри выполняются. Так работает блок онлайн-записи `<x-site.booking>` на «Контактах»; кнопка в заглушке даёт согласие на внешние сервисы.
+- Если меняется состав cookie или категорий — увеличить `VERSION` в `consent.js`, баннер снова покажется всем.
+
+## Мессенджеры
+
+- `<x-site.messengers>`: вариант `icons` — шапка, мобильное меню, подвал; вариант `buttons` — «Контакты». Ссылки `https://wa.me/<номер>` и `https://t.me/<имя>` из настроек; пустое поле — кнопки нет.
+
+## Системные страницы
+
+- `SystemPagesSeeder` создаёт страницы `home`, `about`, `contacts`, `privacy` (слаги и заголовки ru/et/en) через `firstOrCreate` по `key` и ничего не перезаписывает. Вызывается из `DatabaseSeeder` в любом окружении, в том числе в production (`php artisan db:seed --force`). `DemoContentSeeder` берёт список страниц отсюда.
+- Tailwind не сканирует `storage/framework/views`: иначе размер CSS зависел бы от содержимого кеша шаблонов.
