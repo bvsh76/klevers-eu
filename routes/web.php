@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\LeadController;
+use App\Http\Middleware\StoreUtm;
 use App\Support\Sitemap;
 use Illuminate\Support\Facades\Route;
 
@@ -9,12 +11,13 @@ Route::get('/', fn () => redirect()->route('home', ['locale' => config('locales.
 
 Route::prefix('{locale}')
     ->where(['locale' => implode('|', array_keys(config('locales.supported')))])
-    ->middleware('locale')
+    ->middleware(['locale', StoreUtm::class])
     ->group(function () {
         $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
         $sections = collect(config('locales.sections'))->flatten()->unique()->implode('|');
 
         Route::get('/', [ContentController::class, 'home'])->name('home');
+        Route::post('lead', [LeadController::class, 'store'])->middleware('throttle:5,1')->name('lead.store');
         Route::get('{section}/{slug}', [ContentController::class, 'section'])
             ->where(['section' => $sections, 'slug' => $slug])
             ->name('section');

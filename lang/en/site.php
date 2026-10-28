@@ -29,4 +29,18 @@ return [
     'service_packages' => 'Packages and pricing',
     'related_segments' => 'Who it is for',
     'related_services' => 'Relevant services',
+
+    'lead_form_title' => 'Send us a request',
+    'lead_form_text' => 'Tell us about your task — we will get in touch and suggest a convenient time for a consultation.',
+    'form_name' => 'Name',
+    'form_email' => 'Email',
+    'form_phone' => 'Phone',
+    'form_message' => 'Message',
+    'form_optional' => 'optional',
+    'form_consent' => 'I agree to the processing of my personal data to respond to this request.',
+    'form_consent_short' => 'consent to data processing',
+    'form_privacy' => 'Privacy policy',
+    'form_submit' => 'Send request',
+    'lead_sent_title' => 'Thank you, your request has been sent',
+    'lead_sent_text' => 'We will get in touch with you shortly.',
 ];

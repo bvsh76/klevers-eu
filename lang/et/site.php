@@ -29,4 +29,18 @@ return [
     'service_packages' => 'Paketid ja hinnad',
     'related_segments' => 'Kellele sobib',
     'related_services' => 'Sobivad teenused',
+
+    'lead_form_title' => 'Jätke päring',
+    'lead_form_text' => 'Kirjeldage oma küsimust — võtame teiega ühendust ja pakume sobiva aja konsultatsiooniks.',
+    'form_name' => 'Nimi',
+    'form_email' => 'E-post',
+    'form_phone' => 'Telefon',
+    'form_message' => 'Sõnum',
+    'form_optional' => 'vabatahtlik',
+    'form_consent' => 'Nõustun oma isikuandmete töötlemisega päringule vastamiseks.',
+    'form_consent_short' => 'nõusolek andmete töötlemiseks',
+    'form_privacy' => 'Privaatsuspoliitika',
+    'form_submit' => 'Saada päring',
+    'lead_sent_title' => 'Aitäh, päring on saadetud',
+    'lead_sent_text' => 'Võtame teiega peagi ühendust.',
 ];

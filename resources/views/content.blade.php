@@ -18,6 +18,12 @@
         </article>
     @endif
 
+    @if (($item->key ?? null) === 'contacts')
+        <section class="mx-auto max-w-site px-4 pt-12 sm:px-6">
+            <x-site.lead-form class="max-w-3xl" :locale="$locale" />
+        </section>
+    @endif
+
     @if ($packages->isNotEmpty())
         <section class="mx-auto max-w-site px-4 pt-16 sm:px-6">
             <h2 class="text-2xl font-bold tracking-tight">{{ __('site.service_packages') }}</h2>
