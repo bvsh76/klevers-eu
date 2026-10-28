@@ -15,12 +15,7 @@ class DemoContentSeeder extends Seeder
 {
     public function run(): void
     {
-        $pages = [
-            'home' => [['home', 'home', 'home'], ['Консалтинг и бухгалтерия для вашей фирмы в Эстонии', 'Nõustamine ja raamatupidamine teie Eesti ettevõttele', 'Consulting and accounting for your company in Estonia']],
-            'about' => [['o-kompanii', 'meist', 'about'], ['О компании', 'Meist', 'About us']],
-            'contacts' => [['kontakty', 'kontakt', 'contacts'], ['Контакты', 'Kontakt', 'Contacts']],
-            'privacy' => [['politika-konfidencialnosti', 'privaatsuspoliitika', 'privacy-policy'], ['Политика конфиденциальности', 'Privaatsuspoliitika', 'Privacy policy']],
-        ];
+        $pages = SystemPagesSeeder::PAGES;
 
         foreach (array_values(array_keys($pages)) as $i => $key) {
             [$slug, $title] = $pages[$key];
