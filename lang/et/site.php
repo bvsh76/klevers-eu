@@ -81,4 +81,5 @@ return [
     'booking_text' => 'Valige kalendrist sobiv aeg.',
     'booking_consent_text' => 'Broneerimiskalender laaditakse välisest teenusest, mis võib seada oma küpsiseid. Nuppu vajutades nõustute väliste teenuste kasutamisega.',
     'booking_consent_button' => 'Näita broneerimiskalendrit',
+    'messenger_write' => 'Kirjuta :name\'is',
 ];

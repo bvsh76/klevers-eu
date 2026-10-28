@@ -11,6 +11,7 @@
         <div class="space-y-4">
             <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="text-xl font-bold tracking-tight text-primary">{{ config('app.name') }}</a>
             <x-language-switcher />
+            <x-site.messengers class="-ml-2" />
         </div>
         @foreach ($columns as $column)
             <div>

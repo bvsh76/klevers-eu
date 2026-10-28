@@ -81,4 +81,5 @@ return [
     'booking_text' => 'Choose a convenient time in the calendar.',
     'booking_consent_text' => 'The booking calendar is loaded from an external service that may set its own cookies. By clicking the button you agree to the use of external services.',
     'booking_consent_button' => 'Show booking calendar',
+    'messenger_write' => 'Message us on :name',
 ];

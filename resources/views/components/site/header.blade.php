@@ -31,6 +31,7 @@
         </nav>
 
         <div class="flex items-center gap-3">
+            <x-site.messengers class="hidden lg:flex" />
             <x-language-switcher class="hidden lg:block" />
             @if ($contact)
                 <a href="{{ $contact['url'] }}" class="hidden rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-hover sm:inline-flex">{{ __('site.cta_consultation') }}</a>
@@ -63,6 +64,7 @@
                 </ul>
             @endif
             <div class="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-4">
+                <x-site.messengers class="-ml-2" />
                 <x-language-switcher />
                 @if ($contact)
                     <a href="{{ $contact['url'] }}" class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-hover">{{ __('site.cta_consultation') }}</a>

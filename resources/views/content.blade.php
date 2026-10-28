@@ -21,6 +21,7 @@
     @if (($item->key ?? null) === 'contacts')
         <section class="mx-auto max-w-site px-4 pt-12 sm:px-6">
             <x-site.lead-form class="max-w-3xl" :locale="$locale" />
+            <x-site.messengers variant="buttons" class="mt-8 max-w-3xl flex-wrap" />
             <x-site.booking class="mt-8 max-w-3xl" />
         </section>
     @endif
