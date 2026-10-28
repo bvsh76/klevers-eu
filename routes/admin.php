@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\SegmentController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubscriberController;
 use App\Http\Middleware\EnsureAdmin;
 use Illuminate\Support\Facades\Route;
@@ -26,5 +27,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('leads', LeadController::class)->only(['index', 'show', 'update'])->parameters(['leads' => 'id']);
         Route::get('subscribers/export', [SubscriberController::class, 'export'])->name('subscribers.export');
         Route::get('subscribers', [SubscriberController::class, 'index'])->name('subscribers.index');
+        Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
+        Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
     });
 });

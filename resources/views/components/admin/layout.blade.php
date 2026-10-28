@@ -21,13 +21,14 @@
             'admin.packages.index' => 'Пакеты',
             'admin.leads.index' => 'Заявки',
             'admin.subscribers.index' => 'Подписчики',
+            'admin.settings.edit' => 'Настройки',
         ];
     @endphp
     <header class="topbar">
         <strong>{{ config('app.name') }} · админка</strong>
         <nav>
             @foreach ($menu as $route => $label)
-                @if (Route::has($route))
+                @if (Route::has($route) && ($route !== 'admin.settings.edit' || auth()->user()->role === \App\Enums\Role::Admin))
                     <a href="{{ route($route) }}" @class(['active' => request()->routeIs(str_replace('.index', '.*', $route))])>{{ $label }}</a>
                 @endif
             @endforeach
