@@ -19,6 +19,7 @@ class SettingController extends Controller
         'lead_email' => ['E-mail для уведомлений о заявках', 'input'],
         'booking_embed' => ['Код встраивания онлайн-записи (Cal.com, Calendly и др.) — вставляется на сайт как есть', 'textarea'],
         'ga4_id' => ['Google Analytics 4 — идентификатор вида G-XXXXXXXXXX', 'input'],
+        'lead_magnet_url' => ['Лид-магнит — ссылка на файл (https), выдаётся после подтверждения подписки', 'input'],
     ];
 
     public function edit(Request $request): View
@@ -50,6 +51,7 @@ class SettingController extends Controller
             'lead_email' => ['nullable', 'email', 'max:255'],
             'booking_embed' => ['nullable', 'string', 'max:20000'],
             'ga4_id' => ['nullable', 'string', 'regex:/^G-[A-Z0-9]{4,20}$/'],
+            'lead_magnet_url' => ['nullable', 'url:https', 'max:2000'],
         ], [], $attributes);
 
         $data['whatsapp'] = filled($data['whatsapp'] ?? null) ? preg_replace('/\D/', '', $data['whatsapp']) : null;

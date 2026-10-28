@@ -9,7 +9,7 @@ class Setting extends Model
 {
     public const CACHE_KEY = 'settings.all';
 
-    public const KEYS = ['whatsapp', 'telegram', 'lead_email', 'booking_embed', 'ga4_id'];
+    public const KEYS = ['whatsapp', 'telegram', 'lead_email', 'booking_embed', 'ga4_id', 'lead_magnet_url'];
 
     protected $fillable = ['key', 'value'];
 

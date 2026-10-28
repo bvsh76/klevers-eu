@@ -24,6 +24,11 @@
         @endforeach
     </div>
     <div class="border-t border-line">
+        <div class="mx-auto max-w-site px-4 py-8 sm:px-6">
+            <x-site.subscribe-form />
+        </div>
+    </div>
+    <div class="border-t border-line">
         <p class="mx-auto max-w-site px-4 py-6 text-sm text-muted sm:px-6">&copy; {{ now(config('app.display_timezone'))->year }} {{ config('app.name') }}. {{ __('site.footer_rights') }}</p>
     </div>
 </footer>

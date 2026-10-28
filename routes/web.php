@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\SubscriberController;
 use App\Http\Middleware\StoreUtm;
 use App\Support\Sitemap;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,10 @@ Route::prefix('{locale}')
 
         Route::get('/', [ContentController::class, 'home'])->name('home');
         Route::post('lead', [LeadController::class, 'store'])->middleware('throttle:5,1')->name('lead.store');
+        Route::post('subscribe', [SubscriberController::class, 'store'])->middleware('throttle:5,1')->name('subscribe');
+        Route::get('subscribe/confirm/{subscriber}', [SubscriberController::class, 'confirm'])->whereNumber('subscriber')->middleware('signed')->name('subscribe.confirm');
+        Route::get('unsubscribe/{token}', [SubscriberController::class, 'unsubscribeForm'])->where('token', '[A-Za-z0-9]{48}')->name('unsubscribe');
+        Route::post('unsubscribe/{token}', [SubscriberController::class, 'unsubscribe'])->where('token', '[A-Za-z0-9]{48}')->name('unsubscribe.store');
         Route::get('{section}/{slug}', [ContentController::class, 'section'])
             ->where(['section' => $sections, 'slug' => $slug])
             ->name('section');
