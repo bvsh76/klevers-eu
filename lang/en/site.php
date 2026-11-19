@@ -85,4 +85,6 @@ return [
     'coming_soon_title' => 'Our website is being updated',
     'coming_soon_text' => 'The new Klevers website is coming soon.',
     'coming_soon_contact' => 'In the meantime, contact us:',
+    'error_403_title' => 'Access denied',
+    'error_403_text' => 'You do not have permission to view this page.',
 ];

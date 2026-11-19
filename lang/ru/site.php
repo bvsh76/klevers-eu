@@ -85,4 +85,6 @@ return [
     'coming_soon_title' => 'Сайт обновляется',
     'coming_soon_text' => 'Скоро здесь откроется новый сайт Klevers.',
     'coming_soon_contact' => 'А пока свяжитесь с нами:',
+    'error_403_title' => 'Доступ запрещён',
+    'error_403_text' => 'У вас нет доступа к этой странице.',
 ];

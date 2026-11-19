@@ -85,4 +85,6 @@ return [
     'coming_soon_title' => 'Veebileht on uuendamisel',
     'coming_soon_text' => 'Peagi avaneb siin Kleversi uus veebileht.',
     'coming_soon_contact' => 'Seni võtke meiega ühendust:',
+    'error_403_title' => 'Juurdepääs keelatud',
+    'error_403_text' => 'Teil puudub sellele lehele juurdepääs.',
 ];
