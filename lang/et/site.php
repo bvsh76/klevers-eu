@@ -82,4 +82,7 @@ return [
     'booking_consent_text' => 'Broneerimiskalender laaditakse välisest teenusest, mis võib seada oma küpsiseid. Nuppu vajutades nõustute väliste teenuste kasutamisega.',
     'booking_consent_button' => 'Näita broneerimiskalendrit',
     'messenger_write' => 'Kirjuta :name\'is',
+    'coming_soon_title' => 'Veebileht on uuendamisel',
+    'coming_soon_text' => 'Peagi avaneb siin Kleversi uus veebileht.',
+    'coming_soon_contact' => 'Seni võtke meiega ühendust:',
 ];

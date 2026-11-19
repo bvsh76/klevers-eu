@@ -82,4 +82,7 @@ return [
     'booking_consent_text' => 'The booking calendar is loaded from an external service that may set its own cookies. By clicking the button you agree to the use of external services.',
     'booking_consent_button' => 'Show booking calendar',
     'messenger_write' => 'Message us on :name',
+    'coming_soon_title' => 'Our website is being updated',
+    'coming_soon_text' => 'The new Klevers website is coming soon.',
+    'coming_soon_contact' => 'In the meantime, contact us:',
 ];
